@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>OIW | OSINT Investigation Workstation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-icon">O</div>
+            <div>
+                <h1>OSINT WORKSTATION</h1>
+                <span>INVESTIGATION SEARCH INTERFACE</span>
+            </div>
+        </div>
+        <div class="status">
+            <span class="status-dot"></span>
+            LOCAL INSTANCE
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="welcome">
+            <div>
+                <div class="eyebrow">INVESTIGATION TOOLS / 01</div>
+                <h2>Multi-Platform Search</h2>
+                <p>Choose an identifier, select your research platforms
+                   and open the relevant searches in Chrome.</p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <h3>Search identifier</h3>
+                <span class="small-label">NEW SEARCH</span>
+            </div>
+
+            <div class="field">
+                <label for="searchType">IDENTIFIER TYPE</label>
+                <select id="searchType">
+                    <option value="username">Username</option>
+                    <option value="email">Email address</option>
+                    <option value="phone">Telephone number</option>
+                    <option value="name">Full name</option>
+                    <option value="domain">Domain</option>
+                    <option value="ip">IP address</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="searchTerm">SEARCH TERM</label>
+                <input id="searchTerm"
+                       type="text"
+                       autocomplete="off"
+                       spellcheck="false"
+                       placeholder="Enter identifier...">
+                <span class="hint">Search terms are not saved by this application.</span>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <h3>Research platforms</h3>
+                <div class="selection-actions">
+                    <button id="selectAll" class="text-button">Select all</button>
+                    <button id="selectNone" class="text-button">Clear</button>
+                </div>
+            </div>
+
+            <div id="platforms" class="platform-grid">
+                <p>Loading platform configuration...</p>
+            </div>
+        </section>
+
+        <section class="launch-panel">
+            <div>
+                <div class="launch-title">Ready to launch</div>
+                <div class="launch-subtitle" id="selectionCount">
+                    0 platforms selected
+                </div>
+            </div>
+            <button id="launchButton" class="launch-button">
+                OPEN SELECTED SEARCHES ↗
+            </button>
+        </section>
+
+        <section class="notice">
+            <strong>Research notice</strong>
+            <p>Searches are opened in external services. Manual integrations
+            require you to complete the search on the destination website.
+            External services may retain search terms and access information
+            under their own privacy policies.</p>
+        </section>
+            <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+{
+  "version": "2.0",
+  "providers": [
+    {
+      "id": "google",
+      "name": "Google",
+      "category": "Search engines",
+      "types": ["username", "email", "phone", "name", "domain", "ip"],
+      "urlTemplates": {
+        "username": "https://www.google.com/search?q={query}",
+        "email": "https://www.google.com/search?q={query}",
+        "phone": "https://www.google.com/search?q={query}",
+        "name": "https://www.google.com/search?q={query}",
+        "domain": "https://www.google.com/search?q={query}",
+        "ip": "https://www.google.com/search?q={query}"
+      },
+      "enabled": true
+    },
+    {
+      "id": "startpage",
+      "name": "Startpage",
+      "category": "Search engines",
+      "types": ["username", "email", "phone", "name", "domain", "ip"],
+      "urlTemplates": {
+        "username": "https://www.startpage.com/sp/search?query={query}",
+        "email": "https://www.startpage.com/sp/search?query={query}",
+        "phone": "https://www.startpage.com/sp/search?query={query}",
+        "name": "https://www.startpage.com/sp/search?query={query}",
+        "domain": "https://www.startpage.com/sp/search?query={query}",
+        "ip": "https://www.startpage.com/sp/search?query={query}"
+      },
+      "enabled": true
+    },
+    {
+      "id": "osint-industries",
+      "name": "OSINT Industries",
+      "category": "Identity intelligence",
+      "types": ["username", "email", "phone", "name"],
+      "manualUrl": "https://osint.industries/",
+      "enabled": true
+    },
+    {
+      "id": "hibp",
+      "name": "Have I Been Pwned",
+      "category": "Email intelligence",
+      "types": ["email"],
+      "urlTemplates": {
+        "email": "https://haveibeenpwned.com/account/{query}"
+      },
+      "enabled": true
+    },
+    {
+      "id": "epieos",
+      "name": "Epieos",
+      "category": "Identity intelligence",
+      "types": ["email", "phone"],
+      "manualUrl": "https://epieos.com/",
+      "enabled": true
+    },
+    {
+      "id": "whatsmyname",
+      "name": "WhatsMyName",
+      "category": "Username research",
+      "types": ["username"],
+      "urlTemplates": {
+        "username": "https://whatsmyname.app/?q={query}"
+      },
+      "enabled": true
+    },
+    {
+      "id": "emailrep",
+      "name": "EmailRep",
+      "category": "Email intelligence",
+      "types": ["email"],
+      "manualUrl": "https://emailrep.io/",
+      "enabled": true
+    },
+    {
+      "id": "hunter",
+      "name": "Hunter",
+      "category": "Email intelligence",
+      "types": ["email", "domain"],
+      "manualUrl": "https://hunter.io/",
+      "enabled": true
+    },
+    {
+      "id": "virustotal",
+      "name": "VirusTotal",
+      "category": "Infrastructure",
+      "types": ["domain", "ip"],
+      "manualUrl": "https://www.virustotal.com/",
+      "enabled": true
+    },
+    {
+      "id": "urlscan",
+      "name": "urlscan.io",
+      "category": "Infrastructure",
+      "types": ["domain", "ip"],
+      "manualUrl": "https://urlscan.io/",
+      "enabled": true
+    },
+    {
+      "id": "crtsh",
+      "name": "crt.sh",
+      "category": "Infrastructure",
+      "types": ["domain"],
+      "urlTemplates": {
+        "domain": "https://crt.sh/?q={query}"
+      },
+      "enabled": true
+    },
+    {
+      "id": "censys",
+      "name": "Censys",
+      "category": "Infrastructure",
+      "types": ["domain", "ip"],
+      "manualUrl": "https://search.censys.io/",
+      "enabled": true
+    },
+    {
+      "id": "truecaller",
+      "name": "Truecaller",
+      "category": "Telephone intelligence",
+      "types": ["phone"],
+      "manualUrl": "https://www.truecaller.com/",
+      "enabled": true
+    },
+    {
+      "id": "carrierlookup",
+      "name": "Free Carrier Lookup",
+      "category": "Telephone intelligence",
+      "types": ["phone"],
+      "manualUrl": "https://www.freecarrierlookup.com/",
+      "enabled": true
+    }
+  ]
+}
