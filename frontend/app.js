@@ -445,7 +445,7 @@ async function launchSearches() {
                 "Epieos opened!\n\n" +
                 "Your search identifier has been copied " +
                 "to the clipboard.\n\n" +
-                "Switch to Epieos and paste it into the search field."
+                "Switch to Epieos, EmailRep or other manual-search provider and paste it into the search field."
 
             );
 
