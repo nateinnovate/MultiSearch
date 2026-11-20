@@ -1,0 +1,12 @@
+# Optional original Holehe dependency for OIW's local Python integration.
+# Pin the upstream Holehe release. The extra dependencies below account for
+# modules/imports present in upstream source but missing from older PyPI metadata.
+holehe==1.61
+beautifulsoup4
+termcolor
+httpx
+trio
+tqdm
+colorama
+requests
+legacy-cgi; python_version >= "3.13"

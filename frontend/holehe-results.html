@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <title>Holehe Results · OIW</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/holehe-results.js" defer></script>
+</head>
+<body>
+<header class="header">
+    <div>
+        <h1>Holehe · Local Python Integration</h1>
+        <p>OSINT Investigation Workstation · Separate results tab</p>
+    </div>
+    <a href="/" class="secondary-button">Return to OIW</a>
+</header>
+
+<main class="holehe-results-container">
+    <section class="panel" aria-labelledby="run-heading">
+        <h2 id="run-heading">Email account checks</h2>
+        <p id="runIdentifier">Preparing local Holehe run…</p>
+        <div class="holehe-status-line">
+            <span id="runState" class="holehe-state">Checking</span>
+            <span id="progressText" class="platform-category" aria-live="polite">Connecting to OIW…</span>
+        </div>
+        <div class="holehe-progress-track" role="progressbar" aria-label="Holehe check progress"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack">
+            <div id="progressBar" class="holehe-progress-bar"></div>
+        </div>
+        <p class="holehe-warning">
+            The upstream no-password-recovery module selection is enabled. OIW passes the exact email string you entered; it does not generate alternative addresses or modify characters. Holehe checks third-party services, so results can be incomplete or rate-limited and should be corroborated independently. Some sites may return masked recovery-contact details; those are responses from the sites, not altered target addresses.
+        </p>
+        <div id="runError" class="holehe-error" role="alert" hidden></div>
+        <div id="installHelp" class="holehe-error" hidden>
+            <p>Install the optional Holehe dependency into the same Python environment used to start OIW:</p>
+            <code id="installCommand">python -m pip install -r requirements-holehe.txt</code>
+        </div>
+        <div class="holehe-actions">
+            <a href="/">Back to the OIW search screen</a>
+        </div>
+    </section>
+
+    <section class="panel" aria-labelledby="results-heading">
+        <h2 id="results-heading">Results</h2>
+        <div id="summaryGrid" class="holehe-summary-grid" hidden></div>
+        <div id="resultsList" class="holehe-results-list" aria-live="polite">
+            <p class="loading">Results will appear here when the checks finish.</p>
+        </div>
+    </section>
+
+    <footer><p>OIW v0.3.4 · Holehe results are held in memory for this local session only.</p></footer>
+</main>
+</body>
+</html>
