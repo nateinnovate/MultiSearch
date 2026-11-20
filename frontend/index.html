@@ -1,99 +1,391 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="no-referrer">
-    <title>OIW | OSINT Investigation Workstation</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <title>OSINT Investigation Workstation</title>
+
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
 </head>
+
 <body>
-    <header class="topbar">
-        <div class="brand">
-            <div class="brand-icon">O</div>
-            <div>
-                <h1>OSINT WORKSTATION</h1>
-                <span>INVESTIGATION SEARCH INTERFACE</span>
-            </div>
+
+<header class="header">
+    <div>
+        <h1>OSINT Investigation Workstation</h1>
+        <p>Multi-platform investigation search launcher</p>
+    </div>
+
+    <button id="manageProviders" class="secondary-button">
+        ⚙ Manage Providers
+    </button>
+</header>
+
+
+<main class="main-container">
+
+    <!-- SEARCH PANEL -->
+
+    <section class="panel">
+
+        <h2>New Investigation Search</h2>
+
+        <div class="form-group">
+
+            <label for="searchType">
+                Identifier Type
+            </label>
+
+            <select id="searchType">
+                <option value="username">Username</option>
+                <option value="email">Email Address</option>
+                <option value="phone">Telephone Number</option>
+                <option value="name">Full Name</option>
+                <option value="domain">Domain</option>
+                <option value="ip">IP Address</option>
+            </select>
+
         </div>
-        <div class="status">
-            <span class="status-dot"></span>
-            LOCAL INSTANCE
+
+
+        <div class="form-group">
+
+            <label for="searchTerm">
+                Search Identifier
+            </label>
+
+            <input
+                type="text"
+                id="searchTerm"
+                placeholder="Enter username, email, phone number..."
+                autocomplete="off"
+            >
+
         </div>
-    </header>
 
-    <main class="container">
-        <section class="welcome">
+    </section>
+
+
+    <!-- PROVIDER SELECTION -->
+
+    <section class="panel">
+
+        <div class="section-heading">
+
             <div>
-                <div class="eyebrow">INVESTIGATION TOOLS / 01</div>
-                <h2>Multi-Platform Search</h2>
-                <p>Choose an identifier, select your research platforms
-                   and open the relevant searches in Chrome.</p>
-            </div>
-        </section>
-
-        <section class="panel">
-            <div class="panel-heading">
-                <h3>Search identifier</h3>
-                <span class="small-label">NEW SEARCH</span>
+                <h2>Search Platforms</h2>
+                <p>Select the providers you want to search.</p>
             </div>
 
-            <div class="field">
-                <label for="searchType">IDENTIFIER TYPE</label>
-                <select id="searchType">
-                    <option value="username">Username</option>
-                    <option value="email">Email address</option>
-                    <option value="phone">Telephone number</option>
-                    <option value="name">Full name</option>
-                    <option value="domain">Domain</option>
-                    <option value="ip">IP address</option>
-                </select>
+            <div class="selection-actions">
+
+                <button id="selectAll" class="small-button">
+                    Select All
+                </button>
+
+                <button id="selectNone" class="small-button">
+                    Select None
+                </button>
+
             </div>
 
-            <div class="field">
-                <label for="searchTerm">SEARCH TERM</label>
-                <input id="searchTerm"
-                       type="text"
-                       autocomplete="off"
-                       spellcheck="false"
-                       placeholder="Enter identifier...">
-                <span class="hint">Search terms are not saved by this application.</span>
-            </div>
-        </section>
+        </div>
 
-        <section class="panel">
-            <div class="panel-heading">
-                <h3>Research platforms</h3>
-                <div class="selection-actions">
-                    <button id="selectAll" class="text-button">Select all</button>
-                    <button id="selectNone" class="text-button">Clear</button>
-                </div>
-            </div>
 
-            <div id="platforms" class="platform-grid">
-                <p>Loading platform configuration...</p>
-            </div>
-        </section>
+        <div id="platforms" class="platform-grid">
 
-        <section class="launch-panel">
-            <div>
-                <div class="launch-title">Ready to launch</div>
-                <div class="launch-subtitle" id="selectionCount">
-                    0 platforms selected
-                </div>
-            </div>
-            <button id="launchButton" class="launch-button">
-                OPEN SELECTED SEARCHES ↗
+            <p class="loading">
+                Loading platform configuration...
+            </p>
+
+        </div>
+
+
+        <div class="launch-section">
+
+            <span id="selectionCount">
+                0 platforms selected
+            </span>
+
+            <button id="launchButton" class="primary-button" disabled>
+                Launch Searches
             </button>
-        </section>
 
-        <section class="notice">
-            <strong>Research notice</strong>
-            <p>Searches are opened in external services. Manual integrations
-            require you to complete the search on the destination website.
-            External services may retain search terms and access information
-            under their own privacy policies.</p>
-        </section>
-            <script src="/app.js"></script>
+        </div>
+
+    </section>
+
+
+    <!-- PROVIDER MANAGER -->
+
+    <dialog id="providerDialog" class="manager-dialog">
+
+        <div class="dialog-header">
+
+            <div>
+                <h2>Provider Manager</h2>
+                <p>Manage your OSINT search platforms.</p>
+            </div>
+
+            <button
+                type="button"
+                id="closeProviderManager"
+                class="close-button"
+                aria-label="Close"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="manager-toolbar">
+
+            <input
+                type="search"
+                id="providerSearch"
+                placeholder="Search providers..."
+            >
+
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="Search engines">Search Engines</option>
+                <option value="Identity intelligence">Identity Intelligence</option>
+                <option value="Email intelligence">Email Intelligence</option>
+                <option value="Username research">Username Research</option>
+                <option value="Telephone intelligence">Telephone Intelligence</option>
+                <option value="Infrastructure">Infrastructure</option>
+            </select>
+
+        </div>
+
+
+        <div class="manager-actions">
+
+            <span id="providerTotal">
+                0 providers
+            </span>
+
+            <button
+                type="button"
+                id="addProvider"
+                class="primary-button"
+            >
+                + Add Provider
+            </button>
+
+        </div>
+
+
+        <div id="providerList" class="provider-list">
+
+        </div>
+
+    </dialog>
+
+
+    <!-- ADD / EDIT PROVIDER -->
+
+    <dialog id="editProviderDialog" class="editor-dialog">
+
+        <div class="dialog-header">
+
+            <div>
+                <h2 id="editorTitle">Add Provider</h2>
+                <p>Configure a new search platform.</p>
+            </div>
+
+            <button
+                type="button"
+                id="closeEditor"
+                class="close-button"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <form id="providerForm">
+
+            <input type="hidden" id="providerId">
+
+
+            <div class="form-group">
+
+                <label for="providerName">
+                    Provider Name
+                </label>
+
+                <input
+                    type="text"
+                    id="providerName"
+                    maxlength="100"
+                    required
+                    placeholder="Example: Example OSINT"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="providerCategory">
+                    Category
+                </label>
+
+                <select id="providerCategory" required>
+                    <option value="Search engines">Search Engines</option>
+                    <option value="Identity intelligence">Identity Intelligence</option>
+                    <option value="Email intelligence">Email Intelligence</option>
+                    <option value="Username research">Username Research</option>
+                    <option value="Telephone intelligence">Telephone Intelligence</option>
+                    <option value="Infrastructure">Infrastructure</option>
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="providerUrl">
+                    Website / Search URL
+                </label>
+
+                <input
+                    type="url"
+                    id="providerUrl"
+                    required
+                    placeholder="https://example.com/"
+                >
+
+                <small>
+                    Use the provider homepage for manual searches.
+                </small>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="providerMode">
+                    Search Behaviour
+                </label>
+
+                <select id="providerMode">
+
+                    <option value="automatic">
+                        Automatic URL search
+                    </option>
+
+                    <option value="manual_clipboard">
+                        Manual search + copy to clipboard
+                    </option>
+
+                    <option value="manual">
+                        Manual search only
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div id="templateGroup" class="form-group">
+
+                <label for="providerTemplate">
+                    Search URL Template
+                </label>
+
+                <input
+                    type="text"
+                    id="providerTemplate"
+                    placeholder="https://example.com/search?q={query}"
+                >
+
+                <small>
+                    Use {query} where the identifier should appear.
+                    The identifier will be URL-encoded automatically.
+                </small>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Supported Identifier Types
+                </label>
+
+                <div class="type-grid">
+
+                    <label>
+                        <input type="checkbox" name="providerType" value="username">
+                        Username
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="providerType" value="email">
+                        Email
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="providerType" value="phone">
+                        Telephone
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="providerType" value="name">
+                        Full Name
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="providerType" value="domain">
+                        Domain
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="providerType" value="ip">
+                        IP Address
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    id="cancelProvider"
+                    class="secondary-button"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Save Provider
+                </button>
+
+            </div>
+
+        </form>
+
+    </dialog>
+
+
+    <footer>
+        <p>OIW v0.3.0 · Local workstation</p>
+    </footer>
+
+</main>
+
 </body>
 </html>
