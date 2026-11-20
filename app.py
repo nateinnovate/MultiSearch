@@ -25,7 +25,7 @@ from webpage_analyser import (
 )
 
 # Application paths and runtime settings. ROOT is the folder containing app.py.
-APP_VERSION = "0.3.4"
+APP_VERSION = "0.4"
 ROOT = Path(__file__).resolve().parent
 FRONTEND = ROOT / "frontend"
 CONFIG = ROOT / "config"
