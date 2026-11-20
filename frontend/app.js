@@ -268,14 +268,43 @@ function selectAllProviders(checked) {
 // --------------------------------------------------
 
 async function copyIdentifier(term) {
-    if (!navigator.clipboard || typeof navigator.clipboard.writeText !== "function") return false;
-    try {
-        await navigator.clipboard.writeText(term);
-        return true;
-    } catch (error) {
-        console.warn("OIW: Clipboard access was unavailable.");
-        return false;
+    // Start the modern clipboard request immediately when called from the
+    // launch-button click handler. Browsers may reject it if called after awaits.
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        try {
+            await navigator.clipboard.writeText(term);
+            return true;
+        } catch (error) {
+            // Continue to the legacy fallback below if the modern API is denied.
+        }
     }
+
+    // Older-browser / restricted-permission fallback. This must be attempted
+    // while the page still has the user's click activation where possible.
+    let temporaryField = null;
+    try {
+        temporaryField = document.createElement("textarea");
+        temporaryField.value = term;
+        temporaryField.setAttribute("readonly", "");
+        temporaryField.setAttribute("aria-hidden", "true");
+        temporaryField.style.position = "fixed";
+        temporaryField.style.left = "-9999px";
+        temporaryField.style.top = "0";
+        document.body.appendChild(temporaryField);
+        temporaryField.focus();
+        temporaryField.select();
+        temporaryField.setSelectionRange(0, temporaryField.value.length);
+
+        const copied = document.execCommand("copy");
+        if (copied) return true;
+    } catch (error) {
+        // The browser may disable the deprecated execCommand clipboard path too.
+    } finally {
+        if (temporaryField) temporaryField.remove();
+    }
+
+    console.warn("OIW: Clipboard access was unavailable through both clipboard methods.");
+    return false;
 }
 
 async function launchSearches() {
@@ -321,6 +350,16 @@ async function launchSearches() {
     let holeheStarted = 0;
     let blocked = 0;
     const holeheTabs = [];
+
+    // Determine whether a manual provider needs the identifier copied. Start
+    // the clipboard operation now, during the original click event and before
+    // any awaited Holehe/network work can consume the browser's user activation.
+    const copyRequired = selected.some(provider =>
+        !isHoleheIntegration(provider) &&
+        !providerIsAutomatic(provider, identifierType) &&
+        provider.clipboard === true
+    );
+    const copyPromise = copyRequired ? copyIdentifier(term) : Promise.resolve(false);
 
     // Open all tabs synchronously from the user action so popup blockers are less likely to interfere.
     for (const provider of selected) {
@@ -386,13 +425,8 @@ async function launchSearches() {
         }
     }
 
-    const copyRequired = selected.some(provider =>
-        !isHoleheIntegration(provider) &&
-        !providerIsAutomatic(provider, identifierType) &&
-        provider.clipboard === true
-    );
-    let copied = false;
-    if (copyRequired) copied = await copyIdentifier(term);
+    // Wait for the copy request that was initiated at the start of this click.
+    const copied = await copyPromise;
 
     ui.selectionCount.textContent =
         `${automaticOpened} automatic · ${manualOpened} manual · ${holeheStarted} Holehe · ${blocked} blocked`;
@@ -772,7 +806,7 @@ function testProvider(provider) {
         const url = buildProviderUrl(provider, identifierType, "oiw-test");
         const tab = window.open(url, "_blank");
         if (tab) {
-            try { tab.opener = null; } catch (error) { /* Tab may already be navigating. */ }
+            try { tab.opener = null; } catch (error) { /* Tab may already have navigated. */ }
             showNotification(isAutomatic
                 ? `Test URL opened for ${provider.name} using the harmless placeholder "oiw-test".`
                 : `${provider.name} website opened. Manual entry is still required.`);
