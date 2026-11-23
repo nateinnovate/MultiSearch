@@ -1194,6 +1194,7 @@ function downloadWebAnalysisReport() {
                 );
             }
         });
+        
     } else {
         lines.push("No telephone numbers identified.");
     }

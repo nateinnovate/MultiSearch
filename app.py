@@ -61,7 +61,7 @@ CATEGORIES = {
     "Infrastructure",
 }
 # BROWSER STARTUP: check common Windows paths for Chrome. Return None if it
-# is not installed in those locations so the default browser can be used.
+# is not installed in those locations so the default browser can be used.#
 
 def find_chrome() -> str | None:
     candidates = [
